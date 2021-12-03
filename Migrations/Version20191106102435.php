@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20191106102435 extends AbstractMigration
+{
+    public function getDescription() : string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema) : void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('CREATE TABLE fee (id INT AUTO_INCREMENT NOT NULL, amount BIGINT NOT NULL, maker_fee NUMERIC(6, 3) NOT NULL, taker_fee NUMERIC(6, 3) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE help_article (id INT AUTO_INCREMENT NOT NULL, created_at DATETIME NOT NULL, topic VARCHAR(255) NOT NULL, text LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE `order` ADD amount_filled NUMERIC(19, 8) NOT NULL, ADD price_filled NUMERIC(19, 8) DEFAULT NULL');
+    }
+
+    public function down(Schema $schema) : void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('DROP TABLE fee');
+        $this->addSql('DROP TABLE help_article');
+        $this->addSql('ALTER TABLE `order` DROP amount_filled, DROP price_filled');
+    }
+}
